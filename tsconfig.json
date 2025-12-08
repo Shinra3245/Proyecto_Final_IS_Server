@@ -1,0 +1,18 @@
+{
+    "compilerOptions":{
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "lib": ["esnext"],
+        "target": "esnext",
+        "moduleResolution": "nodenext",
+        "module": "nodenext",
+        "strict": false,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include": ["src/**/*.ts"],
+     "exclude": ["src/**/*.test.ts"]//indicamos que se compilen todos los archivos ts
+}
