@@ -12,7 +12,7 @@ import db from './config/db'
 export async function connectDB(){
     try{
         await db.authenticate()//autentifica la conexión 
-        await db.sync({ force: true })//sincroniza los modelos, crea tablas si no existen 
+        await db.sync()//sincroniza los modelos, crea tablas si no existen 
         //console.log(colors.bgGreen.white('Conexión exitosa a la BD '))
     }catch(error){
         console.log(error)
