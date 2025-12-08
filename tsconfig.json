@@ -11,7 +11,8 @@
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "useDefineForClassFields": false,
     },
     "include": ["src/**/*.ts"],
      "exclude": ["src/**/*.test.ts"]//indicamos que se compilen todos los archivos ts

@@ -1,7 +1,9 @@
 import { Router } from 'express'
-import { body, param } from 'express-validator' 
+import { body, param } from 'express-validator'
 import { createProduct, deleteProduct, getProductById, getProducts, updateAvailability, updateProduct } from './handlers/product'
 import { handleInputErrors } from './middleware'
+import { createAccount, login } from './handlers/user';
+
 
 const router = Router()
 /** 
@@ -86,7 +88,7 @@ router.get('/', getProducts)
  */
 
 //edpoint de producto por id
-router.get('/:id', 
+router.get('/:id',
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     getProductById
@@ -126,15 +128,15 @@ router.get('/:id',
  *              description: Datos inválidos
  * 
  */
-router.post('/', 
+router.post('/',
     // Validación
     body('name')
         .notEmpty().withMessage('El nombme del producto no puede ir vacío'),
     body('price')
         .isNumeric().withMessage('Valor no valido')
         .notEmpty().withMessage('El precio del producto no puede ir vacío')
-        .custom(value => value > 0).withMessage('Precio no valido'),      
-        handleInputErrors,
+        .custom(value => value > 0).withMessage('Precio no valido'),
+    handleInputErrors,
     createProduct
 )
 
@@ -191,12 +193,12 @@ router.put('/:id',
     body('price')
         .isNumeric().withMessage('Valor no valido')
         .notEmpty().withMessage('El precio del producto no puede ir vacío')
-        .custom(value => value > 0).withMessage('Precio no valido'),      
-        body('availability')
+        .custom(value => value > 0).withMessage('Precio no valido'),
+    body('availability')
         .isBoolean().withMessage('Valor para disponibilidad no valido'),
-        handleInputErrors,    
+    handleInputErrors,
     updateProduct
-    )
+)
 
 /**
  * @swagger
@@ -230,7 +232,7 @@ router.put('/:id',
  */
 
 
-router.patch('/:id', 
+router.patch('/:id',
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     updateAvailability
@@ -267,10 +269,59 @@ router.patch('/:id',
  */
 
 
-router.delete('/:id', 
+router.delete('/:id',
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     deleteProduct)
 
+/**
+ * @swagger
+ * /api/auth/register:
+ *  post:
+ *      summary: Crea un nuevo usuario
+ *      tags:
+ *          - Authentication
+ *      description: Registra un nuevo usuario en la base de datos
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *      properties:
+ *          name:
+ *              type: string
+ *              example: "Tu Nombre"
+ *          email:
+ *              type: string
+ *              example: "correo@correo.com"
+ *          password:
+ *              type: string
+ *              example: "password123"
+ *          responses:
+ *              201:
+ *                  description: Usuario creado exitosamente
+ *              400:
+ *                  description: Error en los datos enviados
+ *              409:
+ *                  description: El usuario ya existe
+ */
+router.post('/auth/register',
+    body('name')
+        .notEmpty().withMessage('El nombre no puede ir vacío'),
+    body('email')
+        .isEmail().withMessage('E-mail no válido'),
+    body('password')
+        .isLength({ min: 8 }).withMessage('El password debe ser de al menos 8 caracteres'),
+    handleInputErrors,
+    createAccount
+)
+
+router.post('/auth/login',
+    body('email').isEmail().withMessage('El email es obligatorio'),
+    body('password').notEmpty().withMessage('El password es obligatorio'),
+    handleInputErrors,
+    login
+);
 
 export default router
