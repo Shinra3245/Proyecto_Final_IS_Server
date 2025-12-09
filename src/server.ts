@@ -27,15 +27,15 @@ const server = express()
 
 const corsOptions: CorsOptions = {
     origin: function(origin, callback) {
-        if (origin === process.env.FRONTEND_URL ) {
+        // Permitir si el origen es igual a la URL del frontend
+        // O (||) si no existe origen (!origin), que es el caso de Postman
+        if (origin === process.env.FRONTEND_URL || !origin) {
             callback(null, true)
         } else {
             callback(new Error('No permitido por CORS'))
         }
     }
 }
-       
-
 
 server.use(cors(corsOptions))
 
