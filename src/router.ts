@@ -56,7 +56,7 @@ const router = Router()
  * 
  */
 
-router.get('/', getProducts)
+router.get('/',authenticate, getProducts)
 
 
 
