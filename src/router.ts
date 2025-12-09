@@ -3,6 +3,7 @@ import { body, param } from 'express-validator'
 import { createProduct, deleteProduct, getProductById, getProducts, updateAvailability, updateProduct } from './handlers/product'
 import { handleInputErrors } from './middleware'
 import { createAccount, login } from './handlers/user';
+import { authenticate } from './middleware/auth'
 
 
 const router = Router()
@@ -128,10 +129,10 @@ router.get('/:id',
  *              description: Datos inválidos
  * 
  */
-router.post('/',
+router.post('/',authenticate,
     // Validación
     body('name')
-        .notEmpty().withMessage('El nombme del producto no puede ir vacío'),
+        .notEmpty().withMessage('El nombre del producto no puede ir vacío'),
     body('price')
         .isNumeric().withMessage('Valor no valido')
         .notEmpty().withMessage('El precio del producto no puede ir vacío')
