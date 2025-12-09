@@ -89,7 +89,7 @@ router.get('/', getProducts)
  */
 
 //edpoint de producto por id
-router.get('/:id',
+router.get('/:id',authenticate,
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     getProductById
@@ -187,7 +187,7 @@ router.post('/',authenticate,
  * 
  */
 
-router.put('/:id',
+router.put('/:id',authenticate,
     param('id').isInt().withMessage('ID no valido'),
     body('name')
         .notEmpty().withMessage('El nombme del producto no puede ir vacío'),
@@ -233,7 +233,7 @@ router.put('/:id',
  */
 
 
-router.patch('/:id',
+router.patch('/:id',authenticate,
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     updateAvailability
@@ -270,7 +270,7 @@ router.patch('/:id',
  */
 
 
-router.delete('/:id',
+router.delete('/:id',authenticate,
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     deleteProduct)
